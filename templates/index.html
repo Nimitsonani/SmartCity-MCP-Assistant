@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SmartCity Assistant</title>
+    <style>
+        /* 1. LAYOUT RESET & FONTS */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Full viewport height */
+        }
+
+        /* 2. HEADER */
+        .header {
+            background-color: #0f172a; /* Navy Blue */
+            color: white;
+            padding: 20px 30px;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* 3. CHAT AREA */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 5%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            scroll-behavior: smooth;
+        }
+
+        /* 4. MESSAGE BUBBLES */
+        .msg {
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 70%;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .bot-msg {
+            align-self: flex-start;
+            background-color: #ffffff;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            white-space: pre-wrap;
+        }
+
+        .user-msg {
+            align-self: flex-end;
+            background-color: #10b981; /* Emerald Green */
+            color: white;
+            border-bottom-right-radius: 2px;
+            box-shadow: 0 2px 5px rgba(16, 185, 129, 0.2);
+        }
+
+        /* 5. INPUT AREA */
+        .input-wrapper {
+            background: #ffffff;
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .chat-input {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 16px;
+            outline: none;
+            background: #f8fafc;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            background: #fff;
+            border-color: #10b981;
+        }
+
+        button {
+            padding: 15px 30px;
+            background-color: #0f172a;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #1e293b;
+        }
+
+        button:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="header">
+        <span>🏙️</span> SmartCity Assistant
+    </div>
+
+    <div class="chat-messages" id="chatBox">
+        {% for msg in chat %}
+            {% if msg.role == "user" %}
+                <div class="msg user-msg">{{ msg.content }}</div>
+            {% else %}
+                <div class="msg bot-msg">{{ msg.content }}</div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="input-wrapper">
+        <form class="chat-input" method="POST" action="{{ url_for('post_home') }}">
+            <input
+                id="queryInput"
+                name="query"
+                type="text"
+                placeholder="Type your message..."
+                autocomplete="off"
+            >
+            <button id="sendBtn" type="submit" disabled>Send</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById("queryInput");
+    const button = document.getElementById("sendBtn");
+    const chatBox = document.getElementById("chatBox");
+
+    // Enable/Disable button based on input
+    input.addEventListener("input", () => {
+        button.disabled = input.value.trim() === "";
+    });
+
+    // Auto-scroll to bottom on load
+    window.onload = function() {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    };
+</script>
+
+</body>
+</html>
