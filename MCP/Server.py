@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv('.env')
-latitude_env = os.getenv('LATITUDE')
-longitude_env = os.getenv('LONGITUDE')
+latitude_env = float(os.getenv('LATITUDE'))
+longitude_env = float(os.getenv('LONGITUDE'))
 geopify_api_key = os.getenv('GEOPIFY_API_KEY')
 news_api_key = os.getenv('NEWS_API_KEY')
 city = os.getenv('CITY')
@@ -250,4 +250,5 @@ def nearby_place(category,
                   "categories":category,
                   "filter":f"circle:{longitude},{latitude},{radius_in_meters}",
                   "limit":limit}
+
     return call(url=url,parameters=parameters)
