@@ -1,5 +1,7 @@
 # SmartCity-MCP-Assistant
 
+🔗 Live Demo: https://smartcity-mcp-assistant.onrender.com/
+
 SmartCity-MCP-Assistant is a city information assistant built using the Model Context Protocol (MCP).
 
 Instead of hardcoding API calls inside the chat logic, the system separates reasoning (LLM) from tool execution (MCP tools).  
